@@ -94,6 +94,9 @@ option(NANOGUI_BUILD_GLAD                "Build GLAD OpenGL loader library? (nee
 option(NANOGUI_BUILD_GLFW                "Build GLFW?" ${NANOGUI_BUILD_GLFW_DEFAULT})
 option(NANOGUI_INSTALL                   "Install NanoGUI on `make install`?" ON)
 
+include(GNUInstallDirs)
+include(CMakeDependentOption)
+
 set(NANOGUI_NATIVE_FLAGS ${NANOGUI_NATIVE_FLAGS_DEFAULT} CACHE STRING
     "Compilation flags used to target the host processor architecture.")
 
@@ -112,6 +115,24 @@ if (NOT NANOGUI_BACKEND)
 endif()
 
 set_property(CACHE NANOGUI_BACKEND PROPERTY STRINGS "OpenGL" "GLES 2" "GLES 3" "Metal")
+
+# Need to load Wayland support if using Wayland
+# We really should have full blown Wayland backend, but that backend stuff is scattered across too many files
+# GLFW has a flag and knows how to use Wayland. All I need to do is define Wayland libraries for linking
+#
+if (GLFW_USE_WAYLAND)
+  #
+  # Note: this snippet copied from GLFW CMakeLists.txt
+  include(FindPkgConfig)
+  pkg_check_modules(Wayland REQUIRED
+    wayland-client>=0.2.7
+    wayland-cursor>=0.2.7
+    wayland-egl>=0.2.7
+    xkbcommon)
+  message(STATUS "NanoGUI will link with Wayland")
+  list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
+
+endif()
 
 # Required libraries, flags, and include files for compiling and linking against nanogui (all targets)
 set(NANOGUI_EXTRA_INCS "")
@@ -156,7 +177,7 @@ elseif (NANOGUI_BACKEND STREQUAL "Metal")
   )
   set(NANOGUI_GLOB "resources/*.metal")
   include_directories(ext/nanovg_metal/src)
-  message(STATUS "NanoGUI: using Metal backend.")
+  message(STATUS "NanoGUI: using Metal backend.")  
 endif()
 
 # Shared library mode: add dllimport/dllexport flags to all symbols
