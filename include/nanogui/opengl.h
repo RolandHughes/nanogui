@@ -33,7 +33,6 @@
 #    define GLFW_INCLUDE_ES2
 #  elif defined(NANOGUI_USE_GLES) && NANOGUI_GLES_VERSION == 3
 #    define GLFW_INCLUDE_ES3
-#    include <gl.h>  /* texture_gl.cpp has compilation error without GL_TEXTURE_2D_MULTISAMPLE */
 #  elif defined(NANOGUI_USE_METAL)
 #  else
 #    error You must select a backend (OpenGL/GLES2/GLES3/Metal)
@@ -47,6 +46,7 @@
 #    include <GLES2/gl2ext.h>
 #  elif NANOGUI_GLES_VERSION == 3
 #    include <GLES3/gl3ext.h>
+#    include <GLES/gl3.h>  /* texture_gl.cpp has compilation error without GL_TEXTURE_2D_MULTISAMPLE */
 #  endif
 #endif
 
