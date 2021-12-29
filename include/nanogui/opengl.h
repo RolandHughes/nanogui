@@ -46,7 +46,7 @@
 #    include <GLES2/gl2ext.h>
 #  elif NANOGUI_GLES_VERSION == 3
 #    include <GLES3/gl3ext.h>
-#    include <GLES/gl3.h>  /* texture_gl.cpp has compilation error without GL_TEXTURE_2D_MULTISAMPLE */
+#    include <GLES3/gl3.h>  /* texture_gl.cpp has compilation error without GL_TEXTURE_2D_MULTISAMPLE */
 #  endif
 #endif
 
