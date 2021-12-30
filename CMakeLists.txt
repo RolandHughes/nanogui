@@ -96,6 +96,7 @@ option(NANOGUI_INSTALL                   "Install NanoGUI on `make install`?" ON
 
 include(GNUInstallDirs)
 include(CMakeDependentOption)
+include(FindPkgConfig)
 
 set(NANOGUI_NATIVE_FLAGS ${NANOGUI_NATIVE_FLAGS_DEFAULT} CACHE STRING
     "Compilation flags used to target the host processor architecture.")
@@ -124,7 +125,6 @@ set_property(CACHE NANOGUI_BACKEND PROPERTY STRINGS "OpenGL" "GLES 2" "GLES 3" "
 if (GLFW_USE_WAYLAND)
   #
   # Note: this snippet copied from GLFW CMakeLists.txt
-  include(FindPkgConfig)
   pkg_check_modules(Wayland REQUIRED
     wayland-client>=0.2.7
     wayland-cursor>=0.2.7
@@ -134,8 +134,19 @@ if (GLFW_USE_WAYLAND)
   list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
   set(NANOGUI_BACKEND_DEFAULT "Wayland")
   set(NANOGUI_BACKEND "Wayland")
-
+  set(NANOGUI_BUILD_GLFW OFF)
 endif()
+
+if (NOT NANOGUI_BUILD_GLFW)
+  if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
+      CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
+      CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
+
+    find_package(glfw3 REQUIRED)
+    list(APPEND NANOGUI_LIBS glfw)
+  endif()
+endif()
+
 
 # Required libraries, flags, and include files for compiling and linking against nanogui (all targets)
 set(NANOGUI_EXTRA_INCS "")
