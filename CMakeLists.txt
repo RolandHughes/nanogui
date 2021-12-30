@@ -553,6 +553,7 @@ if (NANOGUI_INSTALL)
 
   set(NANOGUI_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATAROOTDIR}/cmake/nanogui")
 
+  include(CMakePackageConfigHelpers)
   configure_package_config_file(
     resources/nanoguiConfig.cmake.in nanoguiConfig.cmake
     INSTALL_DESTINATION ${NANOGUI_CMAKECONFIG_INSTALL_DIR})

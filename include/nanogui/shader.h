@@ -252,6 +252,7 @@ protected:
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_metallib)
 #elif defined(NANOGUI_USE_WAYLAND)
 //  TODO:: There should be a .wayland pair of files - re-use gl for now
+//         will not link due to missing stuff.
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_gl)
 #endif
 
