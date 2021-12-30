@@ -119,8 +119,14 @@ endif()
 set_property(CACHE NANOGUI_BACKEND PROPERTY STRINGS "OpenGL" "GLES 2" "GLES 3" "Metal" "Wayland")
 
 # Need to load Wayland support if using Wayland
-# We really should have full blown Wayland backend, but that backend stuff is scattered across too many files
-# GLFW has a flag and knows how to use Wayland. All I need to do is define Wayland libraries for linking
+# 2021-12-30  This currently does not work 
+#             Problem is I do not know how to create the two
+#             files with .wayland extensions in the resources directory
+#             Just re-using the .gl ones makes everything compile but you fail
+#             linking due to missing stuff. Comments in that code would have really
+#             helped. For now this is like 85-90% "solution." It is missing
+#             that last step.
+#             Don't want to delete the code because someone might wish to create the final step.
 #
 if (GLFW_USE_WAYLAND)
   #
@@ -134,10 +140,10 @@ if (GLFW_USE_WAYLAND)
   list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
   set(NANOGUI_BACKEND_DEFAULT "Wayland")
   set(NANOGUI_BACKEND "Wayland")
-  set(NANOGUI_BUILD_GLFW OFF)
 endif()
 
-if (NOT NANOGUI_BUILD_GLFW)
+if (NOT NANOGUI_BUILD_GLFW  AND
+    NOT NANOGUI_BUILD_GLAD)
   if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
       CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
