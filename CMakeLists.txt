@@ -138,8 +138,6 @@ if (GLFW_USE_WAYLAND)
     xkbcommon)
   message(STATUS "NanoGUI will link with Wayland")
   list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
-  set(NANOGUI_BACKEND_DEFAULT "Wayland")
-  set(NANOGUI_BACKEND "Wayland")
 endif()
 
 if (NOT NANOGUI_BUILD_GLFW  AND
