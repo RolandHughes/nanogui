@@ -183,6 +183,8 @@ elseif (NANOGUI_BACKEND STREQUAL "Metal")
   message(STATUS "NanoGUI: using Metal backend.")
 elseif (NANOGUI_BACKEND STREQUAL "Wayland")
   set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_WAYLAND)
+  set(NANOGUI_GLOB "resources/*.gles")
+  message(STATUS "NanoGUI: using Wayland backend.")
 endif()
 
 # Shared library mode: add dllimport/dllexport flags to all symbols
