@@ -250,6 +250,9 @@ protected:
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_gles)
 #elif defined(NANOGUI_USE_METAL)
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_metallib)
+#elif defined(NANOGUI_USE_WAYLAND)
+//  TODO:: There should be a .wayland pair of files - re-use gl for now
+#  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_gl)
 #endif
 
 
