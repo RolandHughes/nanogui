@@ -53,6 +53,8 @@
 #  include "opengl_check.h"
 #elif defined(NANOGUI_USE_METAL)
 #  include <nanovg_mtl.h>
+#elif defined(NANOGUI_USE_WAYLAND)
+#  include <nanovg_gl.h>  // need the antialias enum
 #endif
 
 #if defined(__APPLE__)
