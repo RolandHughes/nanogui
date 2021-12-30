@@ -205,7 +205,7 @@ if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
   endif()
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno_psabi")
 endif()
 
 # Use C++17, visibility=hidden by default, interprocedural optimization
@@ -311,6 +311,7 @@ elseif (APPLE)
     add_definitions(-DGL_SILENCE_DEPRECATION)
     list(APPEND NANOGUI_LIBS ${opengl_library} ${corevideo_library})
     mark_as_advanced(opengl_library corevideo_library)
+    message(STATUS "***** opengl_library: ${opengl_library}   corevideo_library: ${corevideo_library}")
   else()
     find_library(metal_library Metal)
     find_library(quartzcore_library QuartzCore)
@@ -579,11 +580,12 @@ if (NANOGUI_BUILD_EXAMPLES)
   add_executable(example4      src/example4.cpp)
   add_executable(example_icons src/example_icons.cpp)
 
-  target_link_libraries(example1      nanogui)
-  target_link_libraries(example2      nanogui)
-  target_link_libraries(example3      nanogui ${NANOGUI_LIBS}) # For OpenGL
-  target_link_libraries(example4      nanogui)
-  target_link_libraries(example_icons nanogui)
+  # One must include the NANOGUI_LIBS in case of "alternate" backend
+  target_link_libraries(example1      nanogui ${NANOGUI_LIBS})
+  target_link_libraries(example2      nanogui ${NANOGUI_LIBS})
+  target_link_libraries(example3      nanogui ${NANOGUI_LIBS})
+  target_link_libraries(example4      nanogui ${NANOGUI_LIBS})
+  target_link_libraries(example_icons nanogui ${NANOGUI_LIBS})
 
   # Copy icons for example application
   file(COPY resources/icons DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
