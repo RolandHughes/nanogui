@@ -154,6 +154,9 @@ Screen::Screen(const Vector2i &size, const std::string &caption, bool resizable,
 #elif defined(NANOGUI_USE_METAL)
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     m_stencil_buffer = stencil_buffer = false;
+#elif defined(NANOGUI_USE_WAYLAND)
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    m_stencil_buffer = stencil_buffer = false;
 #else
 #  error Did not select a graphics API!
 #endif
