@@ -100,22 +100,6 @@ include(CMakeDependentOption)
 set(NANOGUI_NATIVE_FLAGS ${NANOGUI_NATIVE_FLAGS_DEFAULT} CACHE STRING
     "Compilation flags used to target the host processor architecture.")
 
-if (NOT NANOGUI_BACKEND)
-  if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
-      CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
-      CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
-    set(NANOGUI_BACKEND_DEFAULT "GLES 2")
-  elseif (APPLE)
-    set(NANOGUI_BACKEND_DEFAULT "Metal")
-  else()
-    set(NANOGUI_BACKEND_DEFAULT "OpenGL")
-  endif()
-
-  set(NANOGUI_BACKEND ${NANOGUI_BACKEND_DEFAULT} CACHE STRING "Choose the backend used for rendering (OpenGL/GLES 2/GLES 3/Metal)" FORCE)
-endif()
-
-set_property(CACHE NANOGUI_BACKEND PROPERTY STRINGS "OpenGL" "GLES 2" "GLES 3" "Metal")
-
 # Need to load Wayland support if using Wayland
 # We really should have full blown Wayland backend, but that backend stuff is scattered across too many files
 # GLFW has a flag and knows how to use Wayland. All I need to do is define Wayland libraries for linking
@@ -131,8 +115,27 @@ if (GLFW_USE_WAYLAND)
     xkbcommon)
   message(STATUS "NanoGUI will link with Wayland")
   list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
+  set(NANOGUI_BACKEND_DEFAULT "Wayland")
+  set(NANOGUI_BACKEND "Wayland")
 
 endif()
+  
+if (NOT NANOGUI_BACKEND)
+  if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
+      CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
+      CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
+    set(NANOGUI_BACKEND_DEFAULT "GLES 2")
+  elseif (APPLE)
+    set(NANOGUI_BACKEND_DEFAULT "Metal")
+  else()
+    set(NANOGUI_BACKEND_DEFAULT "OpenGL")
+  endif()
+
+  set(NANOGUI_BACKEND ${NANOGUI_BACKEND_DEFAULT} CACHE STRING "Choose the backend used for rendering (OpenGL/GLES 2/GLES 3/Metal/Wayland)" FORCE)
+endif()
+
+set_property(CACHE NANOGUI_BACKEND PROPERTY STRINGS "OpenGL" "GLES 2" "GLES 3" "Metal" "Wayland")
+
 
 # Required libraries, flags, and include files for compiling and linking against nanogui (all targets)
 set(NANOGUI_EXTRA_INCS "")
