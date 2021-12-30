@@ -183,7 +183,7 @@ elseif (NANOGUI_BACKEND STREQUAL "Metal")
   message(STATUS "NanoGUI: using Metal backend.")
 elseif (NANOGUI_BACKEND STREQUAL "Wayland")
   set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_WAYLAND)
-  set(NANOGUI_GLOB "resources/*.gles")
+  set(NANOGUI_GLOB "resources/*.gl")
   message(STATUS "NanoGUI: using Wayland backend.")
 endif()
 
@@ -421,6 +421,7 @@ add_library(nanogui ${NANOGUI_LIBRARY_TYPE}
 
   # Fonts etc.
   nanogui_resources.cpp
+  nanogui_resources.h
   include/nanogui/common.h src/common.cpp
   include/nanogui/widget.h src/widget.cpp
   include/nanogui/theme.h src/theme.cpp
