@@ -180,7 +180,9 @@ elseif (NANOGUI_BACKEND STREQUAL "Metal")
   )
   set(NANOGUI_GLOB "resources/*.metal")
   include_directories(ext/nanovg_metal/src)
-  message(STATUS "NanoGUI: using Metal backend.")  
+  message(STATUS "NanoGUI: using Metal backend.")
+elseif (NANOGUI_BACKEND STREQUAL "Wayland")
+  set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_WAYLAND)
 endif()
 
 # Shared library mode: add dllimport/dllexport flags to all symbols

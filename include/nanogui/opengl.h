@@ -34,8 +34,9 @@
 #  elif defined(NANOGUI_USE_GLES) && NANOGUI_GLES_VERSION == 3
 #    define GLFW_INCLUDE_ES3
 #  elif defined(NANOGUI_USE_METAL)
+#  elif defined(NANOGUI_USE_WAYLAND)
 #  else
-#    error You must select a backend (OpenGL/GLES2/GLES3/Metal)
+#    error You must select a backend (OpenGL/GLES2/GLES3/Metal/Wayland)
 #  endif
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -53,6 +54,7 @@
 #include <nanovg.h>
 
 // Special treatment of linux Nvidia opengl headers
+// NOTE: NANOGUI_USE_GLAD isn't defined anywhere in the project
 #if !defined(_WIN32) && !defined(__APPLE__) && defined(NANOGUI_USE_OPENGL)
   #if !defined(GL_UNIFORM_BUFFER)
     #warning NanoGUI suspects you have the NVIDIA OpenGL headers installed.  \
