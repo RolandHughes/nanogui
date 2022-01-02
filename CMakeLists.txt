@@ -65,11 +65,6 @@ if (CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
   endif()
 endif()
 
-# Compile for a sufficiently recent processor. Assumes Nehalem+ (with SSE4.2) by
-# default. You may want to set MTS_NATIVE_FLAGS to "-march=native" to use all
-# instructions available on a particular machine.
-set(NANOGUI_NATIVE_FLAGS_DEFAULT "-march=nehalem")
-
 option(NANOGUI_BUILD_EXAMPLES            "Build NanoGUI example application?" ON)
 option(NANOGUI_BUILD_SHARED              "Build NanoGUI as a shared library?" ${NANOGUI_BUILD_SHARED_DEFAULT})
 option(NANOGUI_INSTALL                   "Install NanoGUI on `make install`?" ON)
@@ -77,10 +72,6 @@ option(NANOGUI_INSTALL                   "Install NanoGUI on `make install`?" ON
 include(GNUInstallDirs)
 include(CMakeDependentOption)
 include(FindPkgConfig)
-
-set(NANOGUI_NATIVE_FLAGS ${NANOGUI_NATIVE_FLAGS_DEFAULT} CACHE STRING
-    "Compilation flags used to target the host processor architecture.")
-
 
 # We always use glfw3 for Wayland Weston environments
 #
@@ -157,27 +148,6 @@ if (NANOGUI_BUILD_SHARED)
   message(STATUS "NanoGUI: building shared library.")
 else()
   message(STATUS "NanoGUI: building static library.")
-endif()
-
-add_compile_options(${NANOGUI_NATIVE_FLAGS})
-
-if (MSVC)
-  # Disable annoying MSVC warnings (all targets)
-  add_definitions(/D "_CRT_SECURE_NO_WARNINGS")
-
-  # Parallel build on MSVC (all targets)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-endif()
-
-# Compile with compiler warnings turned on
-if (MSVC)
-  if (CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-  endif()
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-psabi")
 endif()
 
 # Use C++17, visibility=hidden by default, interprocedural optimization
@@ -427,8 +397,6 @@ endif()
 # Quench warnings while compiling NanoVG
 if (CMAKE_COMPILER_IS_GNUCC)
   set_source_files_properties(ext/nanovg/src/nanovg.c PROPERTIES COMPILE_FLAGS -Wno-unused-result)
-elseif(MSVC)
-  set_source_files_properties(ext/nanovg/src/nanovg.c PROPERTIES COMPILE_FLAGS "/wd4005 /wd4456 /wd4457")
 endif()
 
 # Build example application if desired
