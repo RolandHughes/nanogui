@@ -66,10 +66,6 @@ void init() {
     if (!glfwInit())
         throw std::runtime_error("Could not initialize GLFW!");
 
-#if defined(NANOGUI_USE_METAL)
-    metal_init();
-#endif
-
     glfwSetTime(0);
 }
 
@@ -208,20 +204,12 @@ bool active() {
 }
 
 std::pair<bool, bool> test_10bit_edr_support() {
-#if defined(NANOGUI_USE_METAL)
-    return metal_10bit_edr_support();
-#else
     return { false, false };
-#endif
 }
 
 
 void shutdown() {
     glfwTerminate();
-
-#if defined(NANOGUI_USE_METAL)
-    metal_shutdown();
-#endif
 }
 
 #if defined(__clang__)

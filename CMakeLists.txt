@@ -82,7 +82,7 @@ if (NOT NANOGUI_BACKEND)
   if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
       CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
-    set(NANOGUI_BACKEND_DEFAULT "GLES 2")
+    set(NANOGUI_BACKEND_DEFAULT "GLES 3")
   else()
     set(NANOGUI_BACKEND_DEFAULT "OpenGL")
   endif()
@@ -128,19 +128,6 @@ elseif (NANOGUI_BACKEND STREQUAL "GLES 3")
   set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_GLES -DNANOGUI_GLES_VERSION=3)
   set(NANOGUI_GLOB "resources/*.gles")
   message(STATUS "NanoGUI: using GLES 3 backend.")
-elseif (NANOGUI_BACKEND STREQUAL "Metal")
-  set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_METAL)
-  list(APPEND NANOGUI_EXTRA
-    ext/nanovg_metal/src/nanovg_mtl.m ext/nanovg_metal/src/nanovg_mtl.h
-    src/texture_metal.mm src/shader_metal.mm src/renderpass_metal.mm
-  )
-  set(NANOGUI_GLOB "resources/*.metal")
-  include_directories(ext/nanovg_metal/src)
-  message(STATUS "NanoGUI: using Metal backend.")
-elseif (NANOGUI_BACKEND STREQUAL "Wayland")
-  set(NANOGUI_BACKEND_DEFS -DNANOGUI_USE_WAYLAND)
-  set(NANOGUI_GLOB "resources/*.gl")
-  message(STATUS "NanoGUI: using Wayland backend.")
 endif()
 
 # Shared library mode: add dllimport/dllexport flags to all symbols

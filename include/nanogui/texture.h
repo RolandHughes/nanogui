@@ -174,9 +174,6 @@ public:
 #if defined(NANOGUI_USE_OPENGL) || defined(NANOGUI_USE_GLES)
     uint32_t texture_handle() const { return m_texture_handle; }
     uint32_t renderbuffer_handle() const { return m_renderbuffer_handle; }
-#elif defined(NANOGUI_USE_METAL)
-    void *texture_handle() const { return m_texture_handle; }
-    void *sampler_state_handle() const { return m_sampler_state_handle; }
 #endif
 
 protected:
@@ -200,9 +197,6 @@ protected:
     #if defined(NANOGUI_USE_OPENGL) || defined(NANOGUI_USE_GLES)
         uint32_t m_texture_handle = 0;
         uint32_t m_renderbuffer_handle = 0;
-    #elif defined(NANOGUI_USE_METAL)
-        void *m_texture_handle = nullptr;
-        void *m_sampler_state_handle = nullptr;
     #endif
 };
 

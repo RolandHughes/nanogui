@@ -155,9 +155,6 @@ public:
 
 #if defined(NANOGUI_USE_OPENGL) || defined(NANOGUI_USE_GLES)
     uint32_t framebuffer_handle() const { return m_framebuffer_handle; }
-#elif defined(NANOGUI_USE_METAL)
-    void *command_encoder() const { return m_command_encoder; }
-    void *command_buffer() const { return m_command_buffer; }
 #endif
 
 protected:
@@ -185,12 +182,7 @@ protected:
     bool m_scissor_test_backup;
     bool m_cull_face_backup;
     bool m_blend_backup;
-#elif defined(NANOGUI_USE_METAL)
-    void *m_command_buffer;
-    void *m_command_encoder;
-    void *m_pass_descriptor;
-    ref<Shader> m_clear_shader;
-#endif
+#endif    
 };
 
 NAMESPACE_END(nanogui)

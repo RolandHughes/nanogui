@@ -84,36 +84,6 @@ public:
             void main() {
                 gl_FragColor = frag_color;
             })"
-#elif defined(NANOGUI_USE_METAL)
-            // Vertex shader
-            R"(using namespace metal;
-
-            struct VertexOut {
-                float4 position [[position]];
-                float4 color;
-            };
-
-            vertex VertexOut vertex_main(const device packed_float3 *position,
-                                         const device packed_float3 *color,
-                                         constant float4x4 &mvp,
-                                         uint id [[vertex_id]]) {
-                VertexOut vert;
-                vert.position = mvp * float4(position[id], 1.f);
-                vert.color = float4(color[id], 1.f);
-                return vert;
-            })",
-
-            /* Fragment shader */
-            R"(using namespace metal;
-
-            struct VertexOut {
-                float4 position [[position]];
-                float4 color;
-            };
-
-            fragment float4 fragment_main(VertexOut vert [[stage_in]]) {
-                return vert.color;
-            })"
 #endif
         );
 

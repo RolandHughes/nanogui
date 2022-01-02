@@ -489,25 +489,6 @@ public:
             void main() {
                 gl_FragColor = vec4(vec3(intensity), 1.0);
             })"
-#elif defined(NANOGUI_USE_METAL)
-            R"(using namespace metal;
-            struct VertexOut {
-                float4 position [[position]];
-            };
-
-            vertex VertexOut vertex_main(const device packed_float3 *position,
-                                         constant float4x4 &mvp,
-                                         uint id [[vertex_id]]) {
-                VertexOut vert;
-                vert.position = mvp * float4(position[id], 1.f);
-                return vert;
-            })",
-
-            /* Fragment shader */
-            R"(using namespace metal;
-            fragment float4 fragment_main(const constant float &intensity) {
-                return float4(intensity);
-            })"
 #endif
         );
 

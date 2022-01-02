@@ -63,7 +63,7 @@ public:
      *     \ref gl_minor to 1 for a forward compatible core OpenGL 4.1 profile.
      *     Requesting an invalid profile will result in no context (and
      *     therefore no GUI) being created. This attribute is ignored when
-     *     targeting OpenGL ES 2 or Metal.
+     *     targeting OpenGL ES 2 .
      *
      * \param gl_minor
      *     The requested OpenGL Minor version number.  The default is 2, if
@@ -201,20 +201,6 @@ public:
     /// Does the framebuffer have a stencil buffer
     bool has_stencil_buffer() const { return m_stencil_buffer; }
 
-    /// Does the framebuffer use a floating point representation
-    bool has_float_buffer() const { return m_float_buffer; }
-
-#if defined(NANOGUI_USE_METAL)
-    /// Return the associated CAMetalLayer object
-    void *metal_layer() const;
-
-    /// Return the texure of the currently active Metal drawable (or NULL)
-    void *metal_texture() const { return m_metal_texture; }
-
-    /// Return the associated depth/stencil texture
-    Texture *depth_stencil_texture() { return m_depth_stencil_texture; }
-#endif
-
     /// Flush all queued up NanoVG rendering commands
     void nvg_flush();
 
@@ -288,14 +274,8 @@ protected:
     bool m_fullscreen;
     bool m_depth_buffer;
     bool m_stencil_buffer;
-    bool m_float_buffer;
     bool m_redraw;
     std::function<void(Vector2i)> m_resize_callback;
-#if defined(NANOGUI_USE_METAL)
-    void *m_metal_texture = nullptr;
-    void *m_metal_drawable = nullptr;
-    ref<Texture> m_depth_stencil_texture;
-#endif
 };
 
 NAMESPACE_END(nanogui)

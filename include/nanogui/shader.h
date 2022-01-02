@@ -186,8 +186,6 @@ public:
 
 #if defined(NANOGUI_USE_OPENGL) || defined(NANOGUI_USE_GLES)
     uint32_t shader_handle() const { return m_shader_handle; }
-#elif defined(NANOGUI_USE_METAL)
-    void *pipeline_state() const { return m_pipeline_state; }
 #endif
 
 #if defined(NANOGUI_USE_OPENGL)
@@ -235,8 +233,6 @@ protected:
         uint32_t m_vertex_array_handle = 0;
         bool m_uses_point_size = false;
     #  endif
-    #elif defined(NANOGUI_USE_METAL)
-        void *m_pipeline_state;
     #endif
 };
 
@@ -248,8 +244,6 @@ protected:
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_gl)
 #elif defined(NANOGUI_USE_GLES)
 #  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_gles)
-#elif defined(NANOGUI_USE_METAL)
-#  define NANOGUI_SHADER(name) NANOGUI_RESOURCE_STRING(name##_metallib)
 #elif defined(NANOGUI_USE_WAYLAND)
 //  TODO:: There should be a .wayland pair of files - re-use gl for now
 //         will not link due to missing stuff.

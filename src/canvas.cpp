@@ -50,11 +50,7 @@ Canvas::Canvas(Widget *parent, uint8_t samples,
     if (!m_render_to_texture) {
         color_texture = scr;
         if (has_depth_buffer) {
-#if defined(NANOGUI_USE_METAL)
-            depth_texture = scr->depth_stencil_texture();
-#else
             depth_texture = scr;
-#endif
         }
     } else {
         color_texture = new Texture(
@@ -67,27 +63,6 @@ Canvas::Canvas(Widget *parent, uint8_t samples,
             samples,
             Texture::TextureFlags::RenderTarget
         );
-
-#if defined(NANOGUI_USE_METAL)
-        Texture *color_texture_resolved = nullptr;
-
-        if (samples > 1) {
-            color_texture_resolved = new Texture(
-                scr->pixel_format(),
-                scr->component_format(),
-                m_size,
-                Texture::InterpolationMode::Bilinear,
-                Texture::InterpolationMode::Bilinear,
-                Texture::WrapMode::ClampToEdge,
-                1,
-                Texture::TextureFlags::RenderTarget
-            );
-
-            m_render_pass_resolved = new RenderPass(
-                { color_texture_resolved }
-            );
-        }
-#endif
 
         depth_texture = new Texture(
             has_stencil_buffer ? Texture::PixelFormat::DepthStencil
@@ -106,11 +81,7 @@ Canvas::Canvas(Widget *parent, uint8_t samples,
         { color_texture },
         depth_texture,
         has_stencil_buffer ? depth_texture : nullptr,
-#if defined(NANOGUI_USE_METAL)
-        m_render_pass_resolved,
-#else
         nullptr,
-#endif
         clear
     );
 }
@@ -154,10 +125,6 @@ void Canvas::draw(NVGcontext *ctx) {
 
     if (m_render_to_texture) {
         m_render_pass->resize(fbsize);
-#if defined(NANOGUI_USE_METAL)
-        if (m_render_pass_resolved)
-            m_render_pass_resolved->resize(fbsize);
-#endif
     } else {
         m_render_pass->resize(scr->framebuffer_size());
         m_render_pass->set_viewport(offset, fbsize);
@@ -179,10 +146,6 @@ void Canvas::draw(NVGcontext *ctx) {
 
     if (m_render_to_texture) {
         RenderPass *rp = m_render_pass;
-#if defined(NANOGUI_USE_METAL)
-        if (m_render_pass_resolved)
-            rp = m_render_pass_resolved;
-#endif
         rp->blit_to(Vector2i(0, 0), fbsize, scr, offset);
     }
 }

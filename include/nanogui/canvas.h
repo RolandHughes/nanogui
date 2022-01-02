@@ -99,9 +99,6 @@ public:
 
 protected:
     ref<RenderPass> m_render_pass;
-#if defined(NANOGUI_USE_METAL)
-    ref<RenderPass> m_render_pass_resolved;
-#endif
     bool m_draw_border;
     Color m_border_color;
     bool m_render_to_texture;

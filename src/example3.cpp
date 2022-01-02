@@ -67,10 +67,6 @@ int main(int /* argc */, char ** /* argv */) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 
     glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-#elif defined(NANOGUI_USE_METAL)
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-    metal_init();
 #endif
 
     glfwWindowHint(GLFW_SAMPLES, 0);
@@ -183,11 +179,6 @@ int main(int /* argc */, char ** /* argv */) {
         // Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
 
-#if defined(NANOGUI_USE_METAL)
-        // Important to periodically free memory used up by Metal command queues, etc.
-        void *pool = autorelease_init();
-#endif
-
         // Draw nanogui
         screen->draw_setup();
         screen->clear(); // glClear
@@ -195,19 +186,11 @@ int main(int /* argc */, char ** /* argv */) {
         screen->draw_widgets();
         screen->draw_teardown();
 
-#if defined(NANOGUI_USE_METAL)
-        autorelease_release(pool);
-#endif
-
         glfwSwapBuffers(window);
     }
 
     // Terminate GLFW, clearing any resources allocated by GLFW.
     glfwTerminate();
-
-#if defined(NANOGUI_USE_METAL)
-    metal_shutdown();
-#endif
 
     return 0;
 }
