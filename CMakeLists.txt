@@ -30,11 +30,11 @@ project(nanogui
     ${NANOGUI_VERSION}
 )
 
-if (NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ext/glfw/src")
-  message(FATAL_ERROR "The NanoGUI dependency repositories (GLFW, etc.) are missing! "
-    "You probably did not clone the project with --recursive. It is possible to recover "
-    "by calling \"git submodule update --init --recursive\"")
-endif()
+#if (NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ext/glfw/src")
+#  message(FATAL_ERROR "The NanoGUI dependency repositories (GLFW, etc.) are missing! "
+#    "You probably did not clone the project with --recursive. It is possible to recover "
+#    "by calling \"git submodule update --init --recursive\"")
+#endif()
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -109,7 +109,7 @@ if (NOT NANOGUI_BACKEND)
     set(NANOGUI_BACKEND_DEFAULT "GLES 2")
     if (NOT NANOGUI_BUILD_GLFW)
         find_package(glfw3 REQUIRED)
-        list(APPEND NANOGUI_LIBS glfw3)
+        list(APPEND NANOGUI_LIBS glfw)
     endif()
   elseif (APPLE)
     set(NANOGUI_BACKEND_DEFAULT "Metal")
