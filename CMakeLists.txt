@@ -107,6 +107,10 @@ if (NOT NANOGUI_BACKEND)
       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
       CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
     set(NANOGUI_BACKEND_DEFAULT "GLES 2")
+    if (NOT NANOGUI_BUILD_GLFW)
+        find_package(glfw3 REQUIRED)
+        list(APPEND NANOGUI_LIBS glfw3)
+    endif()
   elseif (APPLE)
     set(NANOGUI_BACKEND_DEFAULT "Metal")
   else()
@@ -140,16 +144,6 @@ if (GLFW_USE_WAYLAND)
   list(APPEND NANOGUI_LIBS "${Wayland_LINK_LIBRARIES}")
 endif()
 
-if (NOT NANOGUI_BUILD_GLFW  AND
-    NOT NANOGUI_BUILD_GLAD)
-  if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv7" OR
-      CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR
-      CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
-
-    find_package(glfw3 REQUIRED)
-    list(APPEND NANOGUI_LIBS glfw)
-  endif()
-endif()
 
 
 # Required libraries, flags, and include files for compiling and linking against nanogui (all targets)
